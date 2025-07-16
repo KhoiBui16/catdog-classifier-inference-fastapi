@@ -18,7 +18,7 @@ Triển khai mô hình Deep Learning phân loại ảnh **Chó** và **Mèo** b�
 ## 📁 Cấu trúc thư mục
 
 ```
-deploy_dl_model_fastapi/
+catdog-classifier-inference-fastapi/
 │
 ├── app.py                        # Khởi tạo app FastAPI
 ├── server.py                     # Chạy server bằng Uvicorn

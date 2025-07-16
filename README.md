@@ -61,7 +61,7 @@ deploy_dl_model_fastapi/
 
 ```bash
 git clone https://github.com/KhoiBui16/catdog-classifier-inference-fastapi.git
-cd deploy_dl_model_fastapi
+cd catdog-classifier-inference-fastapi
 ```
 
 

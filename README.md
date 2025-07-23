@@ -1,63 +1,66 @@
 
 # 🐶🐱 Cat vs Dog Classifier API - FastAPI Deployment
 
-Triển khai mô hình Deep Learning phân loại ảnh **Chó** và **Mèo** bằng **PyTorch** và **FastAPI**, đạt độ chính xác khoảng **60%**, cho phép người dùng tải ảnh và nhận kết quả phân loại thông qua REST API.
+A Deep Learning image classification model for Cats and Dogs using PyTorch and FastAPI, achieving around 60% accuracy. 
+Users can upload images and receive classification results via a REST API.
 
 ---
 
-## 🎯 Mục tiêu
+## 🎯 Objectives
 
-- Huấn luyện mô hình phân loại ảnh Cat/Dog bằng ResNet18 (pre-trained).
-- Xây dựng RESTful API bằng FastAPI để phục vụ mô hình.
-- Cho phép người dùng gửi ảnh và nhận kết quả dự đoán.
+- Train a Cat/Dog image classification model using ResNet18 (pre-trained).
+
+- Build a RESTful API with FastAPI to serve the model.
+
+- Allow users to send images and get prediction results.
 
 --- 
 
 
 
-## 📁 Cấu trúc thư mục
+## 📁 Project Structure
 
 ```
 catdog-classifier-inference-fastapi/
 │
-├── app.py                        # Khởi tạo app FastAPI
-├── server.py                     # Chạy server bằng Uvicorn
-├── requirements.txt              # Danh sách thư viện
-├── animal_classification.ipynb   # File train model
+├── app.py                        # Initialize FastAPI app
+├── server.py                     # Launch server with Uvicorn
+├── requirements.txt              # Dependency list
+├── animal_classification.ipynb   # Model training notebook
 │
 ├── config/
-│   ├── catdog_cfg.py             # Config mô hình & xử lý ảnh
-│   └── logging_cfg.py            # Config log
+│   ├── catdog_cfg.py             # Model & image preprocessing config
+│   └── logging_cfg.py            # Logging config
 │
-├── logs/                         # Thư mục lưu file log
+├── logs/                         # Log files
 │
 ├── middleware/
 │   ├── __init__.py
-│   ├── cors.py                   # Cấu hình CORS
+│   ├── cors.py                   # CORS configuration
 │   └── http.py                   # Log HTTP request
 │
 ├── models/
 │   ├── weights/
-│   │   └── catdog_weights.pt     # Trọng số mô hình đã train
-│   ├── catdog_model.py           # Kiến trúc model
+│   │   └── catdog_weights.pt     # Trained model weights
+│   ├── catdog_model.py           # Model architecture
 │   └── catdog_predictor.py       # Predictor class
 │
 ├── routes/
-│   ├── base.py                   # Gom tất cả route
-│   └── catdog_route.py           # Định nghĩa API predict
+│   ├── base.py                   # Route aggregator
+│   └── catdog_route.py           # Route aggregator
 │
 ├── schemas/
-│   └── catdog_schema.py          # Định nghĩa dữ liệu response
+│   └── catdog_schema.py          # Response schema definition
 │
 └── utils/
-    └── logger.py                 # Định nghĩa logger
+    └── logger.py                 # Logger setup
 ```
 
 ---
 
-## 🚀 Hướng dẫn chạy local
+## 🚀 Running Locally
 
-### 1. Clone project từ GitHub
+### 1. Clone the Repository
 
 ```bash
 git clone https://github.com/KhoiBui16/catdog-classifier-inference-fastapi.git
@@ -65,58 +68,64 @@ cd catdog-classifier-inference-fastapi
 ```
 
 
-### 2. Tạo môi trường ảo (tuỳ chọn nhưng khuyến khích)
+### 2. Create a Virtual Environment (Optional but Recommended)
 
-**Với venv:**
+**Using venv:**
 
 ```bash
 python -m venv venv
 source venv/bin/activate        # Windows: .\venv\Scripts\activate
 ```
 
-**Hoặc dùng conda:**
+**Using conda:**
 
 ```bash
 conda create -n catdog_env python=3.10
 conda activate catdog_env
 ```
 
-### 3. Cài đặt thư viện phụ thuộc
+### 3. Install Dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### 4. Chạy ứng dụng FastAPI
+### 4. Run the FastAPI Application
 
 ```bash
 python server.py
 ```
 
-- API sẽ được host tại: `http://0.0.0.0:8000`
-- Giao diện tương tác: `http://localhost:8000/docs`
+- API will be **hosted at**: `http://0.0.0.0:8000`
+
+- **Swagger UI**: `http://localhost:8000/docs`
 
 ---
 
-## 🧠 Mô hình
+## 🧠 Model Overview
 
-- Sử dụng `ResNet18` đã được pre-trained trên ImageNet.
-- Bộ dữ liệu: `cats_vs_dogs` từ HuggingFace Datasets.
-- Input ảnh: RGB, resize 64x64, normalize chuẩn ImageNet.
-- Output: lớp `Cat` hoặc `Dog`, xác suất softmax.
-- Accuracy khoảng **60%** trên tập validation.
+- Architecture: ResNet18 pre-trained on ImageNet.
+
+- Dataset: cats_vs_dogs from HuggingFace Datasets.
+
+- Input: RGB image, resized to 64x64, normalized using ImageNet stats.
+
+- Output: Softmax probabilities for Cat or Dog class.
+
+- Accuracy: ~60% on validation set.
 
 ---
 
 ## 📸 API Endpoint
 
-| Method | Endpoint                              | Mô tả                                 |
+| Method | Endpoint                              | Description                            |
 |--------|---------------------------------------|----------------------------------------|
-| POST   | `/catdog_classification/predict`      | Nhận ảnh tải lên và trả về kết quả phân loại |
+| POST   | `/catdog_classification/predict`      | Upload an image and get prediction     |
 
 **Request:**
-- Dạng: multipart/form-data
-- Trường: `file_upload` (ảnh định dạng JPG, PNG...)
+- Type: multipart/form-data
+
+- Field: file_upload (JPG, PNG...)
 
 **Response (JSON):**
 ```json
@@ -131,17 +140,19 @@ python server.py
 
 ---
 
-## 🧪 Kiểm tra API
+## 🧪 Testing the API
 
-Sau khi chạy `server.py`, bạn có thể:
+Once server.py is running:
 
-1. Truy cập: [http://localhost:8000/docs](http://localhost:8000/docs)
-2. Sử dụng endpoint `/catdog_classification/predict`
-3. Upload một ảnh và nhấn "Execute" để xem kết quả.
+1. Visit: `http://localhost:8000/docs`
+
+2. Use the /catdog_classification/predict endpoint
+
+3. Upload an image and click "Execute" to view the result
 
 ---
 
-## 📚 Tham khảo
+## 📚 References
 
 - [FastAPI Documentation](https://fastapi.tiangolo.com/)
 - [PyTorch](https://pytorch.org/)
